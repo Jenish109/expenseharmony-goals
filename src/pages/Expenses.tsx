@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { sampleExpenses, ExpenseCategory, categoryInfo } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
@@ -27,10 +26,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 
+// Define a custom type that can be either an ExpenseCategory or 'all'
+type CategoryFilter = ExpenseCategory | 'all';
+
 const Expenses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [showAddExpenseDialog, setShowAddExpenseDialog] = useState(false);
   const [newExpense, setNewExpense] = useState({
     description: '',
@@ -53,7 +55,7 @@ const Expenses = () => {
     });
 
   // Get all categories including 'all'
-  const categories: (ExpenseCategory | 'all')[] = ['all', 'food', 'transport', 'housing', 'entertainment', 'utilities', 'shopping', 'health', 'other'];
+  const categories: CategoryFilter[] = ['all', 'food', 'transport', 'housing', 'entertainment', 'utilities', 'shopping', 'health', 'other'];
 
   const handleAddExpense = () => {
     // In a real app we would add to the database
