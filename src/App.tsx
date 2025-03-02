@@ -41,23 +41,25 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/expenses" element={<Expenses />} />
-              <Route path="/budgets" element={<Budgets />} />
-              <Route path="/recurring" element={<RecurringExpenses />} />
-              <Route path="/goals" element={<GoalsPage />} />
-              <Route path="/future-value" element={<FutureValuePage />} />
-              <Route path="/settings" element={<Settings />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/expenses" element={<Expenses />} />
+                <Route path="/budgets" element={<Budgets />} />
+                <Route path="/recurring" element={<RecurringExpenses />} />
+                <Route path="/goals" element={<GoalsPage />} />
+                <Route path="/future-value" element={<FutureValuePage />} />
+                <Route path="/settings" element={<Settings />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </div>
       </ThemeProvider>
     </QueryClientProvider>
   );
