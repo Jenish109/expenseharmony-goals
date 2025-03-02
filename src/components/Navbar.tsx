@@ -1,115 +1,141 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Home,
+  LayoutDashboard,
+  Calendar,
+  Settings,
+  Wallet,
+  Target,
+  TrendingUp
+} from "lucide-react";
 
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { ChevronDown, ChevronUp, LayoutDashboard, DollarSign, PieChart, Settings, CalendarClock, Cog } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
-  const [expanded, setExpanded] = useState(false);
-
-  const routes = [
-    {
-      title: 'Dashboard',
-      icon: LayoutDashboard,
-      href: '/',
-    },
-    {
-      title: 'Expenses',
-      icon: DollarSign,
-      href: '/expenses',
-    },
-    {
-      title: 'Budgets',
-      icon: PieChart,
-      href: '/budgets',
-    },
-    {
-      title: 'Recurring',
-      icon: CalendarClock,
-      href: '/recurring',
-    },
-    {
-      title: 'Settings',
-      icon: Cog,
-      href: '/settings',
-    }
-  ];
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { pathname: path } = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-50 p-4 md:relative md:p-0">
-      {/* Mobile Bottom Navigation Bar */}
-      <Card className="md:hidden glass-card shadow-lg border-0 animate-fade-in">
-        <CardContent className="p-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6 w-full justify-around">
-              {routes.map((route) => (
-                <NavLink
-                  key={route.href}
-                  to={route.href}
-                  className={({ isActive }) =>
-                    cn(
-                      "flex flex-col items-center p-2 rounded-lg transition-colors",
-                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                    )
-                  }
-                >
-                  <route.icon size={20} />
-                  <span className="text-xs mt-1">{route.title}</span>
-                </NavLink>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <aside className="md:w-60 border-r flex-none hidden md:block bg-sidebar">
+      <div className="p-3 flex flex-col h-full">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="font-bold text-lg">
+            CASHFLOW
+          </Link>
+          <button
+            className="md:hidden rounded-lg p-2"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            MENU
+          </button>
+        </div>
 
-      {/* Desktop Sidebar */}
-      <div className="hidden md:block h-screen sticky top-0">
-        <Card className={cn(
-          "h-full w-[240px] rounded-r-2xl border-r border-t-0 border-l-0 border-b-0 transition-all duration-300 bg-white/90 backdrop-blur-md",
-          expanded ? "w-[240px]" : "w-[80px]"
-        )}>
-          <CardContent className="p-4 h-full flex flex-col">
-            <div className="flex items-center justify-between mb-8 mt-2">
-              <div className={cn(
-                "font-semibold text-lg transition-opacity",
-                expanded ? "opacity-100" : "opacity-0"
-              )}>
-                BudgetTracker
-              </div>
-              <button 
-                onClick={() => setExpanded(!expanded)}
-                className="p-2 rounded-full hover:bg-accent transition-colors"
+        <div className="mt-6">
+          <ul className="space-y-1">
+            <li>
+              <Link
+                to="/"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
               >
-                {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-              </button>
-            </div>
-            
-            <div className="space-y-2">
-              {routes.map((route) => (
-                <NavLink
-                  key={route.href}
-                  to={route.href}
-                  className={({ isActive }) =>
-                    cn(
-                      "flex items-center p-3 rounded-lg transition-all",
-                      isActive ? "bg-accent text-accent-foreground" : "hover:bg-secondary text-muted-foreground hover:text-foreground"
-                    )
-                  }
-                >
-                  <route.icon size={20} className="shrink-0" />
-                  <span className={cn(
-                    "ml-3 transition-opacity duration-200",
-                    expanded ? "opacity-100" : "opacity-0"
-                  )}>
-                    {route.title}
-                  </span>
-                </NavLink>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                <LayoutDashboard className="h-5 w-5" />
+                <span>Dashboard</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/expenses"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/expenses"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Wallet className="h-5 w-5" />
+                <span>Expenses</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/budgets"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/budgets"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Home className="h-5 w-5" />
+                <span>Budgets</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/recurring"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/recurring"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Calendar className="h-5 w-5" />
+                <span>Recurring</span>
+              </Link>
+            </li>
+            {/* After the RecurringExpenses link */}
+            <li>
+              <Link
+                to="/goals"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/goals"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Target className="h-5 w-5" />
+                <span>Goals</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/future-value"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  path === "/future-value"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <TrendingUp className="h-5 w-5" />
+                <span>Future Value</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-auto">
+          <Link
+            to="/settings"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+              path === "/settings"
+                ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            )}
+          >
+            <Settings className="h-5 w-5" />
+            <span>Settings</span>
+          </Link>
+        </div>
       </div>
-    </div>
+    </aside>
   );
 }

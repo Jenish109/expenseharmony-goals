@@ -12,6 +12,8 @@ import Settings from "./pages/Settings";
 import RecurringExpenses from "./pages/RecurringExpenses";
 import NotFound from "./pages/NotFound";
 import { SplashScreen } from "./components/SplashScreen";
+import GoalsPage from "./pages/GoalsPage";
+import FutureValuePage from "./pages/FutureValuePage";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +48,8 @@ const App = () => {
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/budgets" element={<Budgets />} />
             <Route path="/recurring" element={<RecurringExpenses />} />
+            <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/future-value" element={<FutureValuePage />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

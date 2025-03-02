@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { RecurringExpenseForm } from "@/components/RecurringExpenseForm";
@@ -10,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, CalendarClock, AlertCircle, DollarSign, RefreshCw } from "lucide-react";
 import { ExpenseCategory, categoryInfo } from "@/lib/data";
 import { toast } from "sonner";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 interface RecurringExpense {
   id: string;

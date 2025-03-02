@@ -6,7 +6,7 @@ import { TransactionList } from "@/components/TransactionList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Plus, ArrowUpDown, Filter } from "lucide-react";
+import { Search, Plus, ArrowUpDown, Filter, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
   Dialog,
@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { FutureValueSimulator } from "@/components/FutureValueSimulator";
 
 // Define a custom type that can be either an ExpenseCategory or 'all'
 type CategoryFilter = ExpenseCategory | 'all';
@@ -35,6 +36,8 @@ const Expenses = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [showAddExpenseDialog, setShowAddExpenseDialog] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState<string | null>(null);
+  const [showFutureValueDialog, setShowFutureValueDialog] = useState(false);
   const [newExpense, setNewExpense] = useState({
     description: '',
     amount: '',
@@ -65,6 +68,20 @@ const Expenses = () => {
       description: `Added ${newExpense.description} for $${newExpense.amount}`
     });
     
+    // Show future value impact notification
+    const amount = parseFloat(newExpense.amount);
+    const futureAmount = amount * 1.5; // Simple approximation for notification
+    
+    setTimeout(() => {
+      toast("See the future impact?", {
+        description: `This $${amount.toFixed(2)} could be $${futureAmount.toFixed(2)} in 5 years if invested!`,
+        action: {
+          label: "See more",
+          onClick: () => setShowFutureValueDialog(true)
+        }
+      });
+    }, 1000);
+    
     // Close the dialog and reset form
     setShowAddExpenseDialog(false);
     setNewExpense({
@@ -73,6 +90,17 @@ const Expenses = () => {
       category: 'food',
       date: new Date().toISOString().split('T')[0]
     });
+  };
+
+  // Function to handle clicking on an expense
+  const handleExpenseClick = (expenseId: string) => {
+    setSelectedExpense(expenseId);
+    // Find the expense
+    const expense = sampleExpenses.find(e => e.id === expenseId);
+    if (expense) {
+      // Show future value dialog
+      setShowFutureValueDialog(true);
+    }
   };
 
   return (
@@ -86,6 +114,32 @@ const Expenses = () => {
               <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
               <p className="text-muted-foreground mt-1">Track and manage your spending</p>
             </header>
+
+            {/* Future Value Insights Card */}
+            <div className="mb-6 animate-fade-in">
+              <Card className="border bg-gradient-to-r from-primary/10 to-primary/5">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold flex items-center gap-2">
+                        <TrendingUp className="text-primary h-5 w-5" />
+                        Future Value Insight
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Your expenses this month could be worth $1,657.76 in 10 years if invested at 8%!
+                      </p>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowFutureValueDialog(true)}
+                      className="bg-white hover:bg-white/80"
+                    >
+                      Simulate
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Controls */}
             <div className="flex flex-col md:flex-row gap-4 mb-6 animate-fade-in">
@@ -179,7 +233,11 @@ const Expenses = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4">
-                  <TransactionList expenses={filteredExpenses} title="" />
+                  <TransactionList 
+                    expenses={filteredExpenses} 
+                    title="" 
+                    onExpenseClick={handleExpenseClick}
+                  />
                 </CardContent>
               </Card>
             </div>
@@ -259,6 +317,25 @@ const Expenses = () => {
               Add Expense
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Future Value Simulator Dialog */}
+      <Dialog open={showFutureValueDialog} onOpenChange={setShowFutureValueDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Future Value Simulator</DialogTitle>
+            <DialogDescription>
+              See how your expense could grow if invested instead
+            </DialogDescription>
+          </DialogHeader>
+          <div>
+            <FutureValueSimulator 
+              expense={selectedExpense ? sampleExpenses.find(e => e.id === selectedExpense) : undefined} 
+              amount={10}
+              onClose={() => setShowFutureValueDialog(false)}
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
