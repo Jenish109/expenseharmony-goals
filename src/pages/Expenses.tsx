@@ -223,7 +223,7 @@ const Expenses = () => {
 
             {/* Expenses List */}
             <div className="animate-fade-in">
-              <Card className="border overflow-hidden">
+              <Card className=" overflow-hidden">
                 <CardHeader className="pb-0">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-lg font-semibold">All Expenses</CardTitle>
