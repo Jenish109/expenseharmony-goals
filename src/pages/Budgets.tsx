@@ -34,11 +34,11 @@ const Budgets = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative">
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-8 h-screen overflow-scroll">
+        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-8 h-screen overflow-scroll">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
@@ -47,8 +47,8 @@ const Budgets = () => {
 
             {/* Budget Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fade-in">
-              <Card className="border-0 shadow-md bg-white/90 backdrop-blur animate-scale-in">
-                <CardContent className="p-6">
+              <Card className="border shadow-md  backdrop-blur animate-scale-in bg-white/90 dark:border-slate-800 dark:bg-slate-950">
+                <CardContent className="p-6 ">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-medium text-muted-foreground">Total Budget</h3>
                     <div className="p-2 bg-primary/10 rounded-full">
@@ -60,7 +60,7 @@ const Budgets = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md bg-white/90 backdrop-blur animate-scale-in">
+              <Card className="border shadow-md bg-white/90 backdrop-blur animate-scale-in dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-medium text-muted-foreground">Spent So Far</h3>
@@ -73,7 +73,7 @@ const Budgets = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md bg-white/90 backdrop-blur animate-scale-in">
+              <Card className="border shadow-md bg-white/90 backdrop-blur animate-scale-in dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-medium text-muted-foreground">Remaining</h3>
@@ -88,7 +88,7 @@ const Budgets = () => {
             </div>
 
             {/* Monthly Budget Overview */}
-            <Card className="mb-8 border-0 shadow-lg bg-white/95 backdrop-blur-md animate-fade-in">
+            <Card className="mb-8 border shadow-lg bg-white/95 backdrop-blur-md animate-fade-in dark:border-slate-800 dark:bg-slate-950">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl font-semibold">Monthly Budget Overview</CardTitle>
@@ -135,7 +135,7 @@ const Budgets = () => {
                     placeholder="Search categories..."
                     value={filterQuery}
                     onChange={(e) => setFilterQuery(e.target.value)}
-                    className="w-full shadow-sm border-0 focus-visible:ring-primary"
+                    className="w-full shadow-sm border dark:border-slate-800 dark:bg-slate-950 focus-visible:ring-primary"
                   />
                 </div>
               </div>

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { sampleExpenses, sampleBudgets } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
@@ -8,6 +7,9 @@ import { BudgetGoal } from "@/components/BudgetGoal";
 import { AppInfoSlider } from "@/components/AppInfoSlider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   // Get current month and year
@@ -31,58 +33,39 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative"> {/* Dark mode background and text */}
       <div className="flex flex-col md:flex-row">
         <Navbar />
-        
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
+
+        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 animate-fade-in">
-              <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-              <p className="text-muted-foreground mt-1">Your financial overview for {monthName} {year}</p>
+              <h1 className="text-3xl font-bold tracking-tight dark:text-gray-100">Dashboard</h1>
+              <p className="dark:text-gray-400 mt-1">Your financial overview for {monthName} {year}</p>
             </header>
 
-            {/* Summary Cards */}
+
             <div className="grid gap-6 md:grid-cols-3 mb-6">
-              <Card className="border animate-fade-in animate-delay-[100ms]">
-                <CardHeader className="pb-2">
-                  <CardDescription>Monthly Income</CardDescription>
-                  <CardTitle className="text-2xl">{formatCurrency(monthlyIncome)}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground flex items-center">
-                    <ArrowUp className="text-green-500 h-4 w-4 mr-1" />
-                    <span>0% from last month</span>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="border animate-fade-in animate-delay-[200ms]">
-                <CardHeader className="pb-2">
-                  <CardDescription>Monthly Expenses</CardDescription>
-                  <CardTitle className="text-2xl">{formatCurrency(totalExpenses)}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground flex items-center">
-                    <ArrowDown className="text-red-500 h-4 w-4 mr-1" />
-                    <span>0% from last month</span>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="border animate-fade-in animate-delay-[300ms]">
-                <CardHeader className="pb-2">
-                  <CardDescription>Monthly Savings</CardDescription>
-                  <CardTitle className="text-2xl">{formatCurrency(savings)}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground flex items-center">
-                    <ArrowUp className="text-green-500 h-4 w-4 mr-1" />
-                    <span>0% from last month</span>
-                  </div>
-                </CardContent>
-              </Card>
+              {[
+                { title: "Monthly Income", value: monthlyIncome, icon: <ArrowUp className="text-green-500 h-4 w-4 mr-1" /> },
+                { title: "Monthly Expenses", value: totalExpenses, icon: <ArrowDown className="text-red-500 h-4 w-4 mr-1" /> },
+                { title: "Monthly Savings", value: savings, icon: <ArrowUp className="text-green-500 h-4 w-4 mr-1" /> },
+              ].map(({ title, value, icon }, index) => (
+                <Card key={title} className={`border dark:border-slate-800 dark:bg-slate-950 animate-fade-in animate-delay-[${(index + 1) * 100}ms]`}>
+                  <CardHeader className="pb-2">
+                    <CardDescription className="dark:text-gray-400">{title}</CardDescription>
+                    <CardTitle className="text-2xl dark:text-gray-100">{formatCurrency(value)}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-sm dark:text-gray-400 flex items-center">
+                      {icon}
+                      <span>0% from last month</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+
 
             {/* Spending Chart */}
             <div className="mb-6 animate-fade-in-left animate-delay-[400ms]">
@@ -92,9 +75,15 @@ const Dashboard = () => {
             {/* Budget Goals and Transactions */}
             <div className="grid gap-6 md:grid-cols-5">
               <div className="md:col-span-2 animate-fade-in-left animate-delay-[500ms]">
-                <Card className="border h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg font-semibold">Budget Goals</CardTitle>
+                <Card className="border dark:border-slate-800 dark:bg-slate-950 h-full">
+                  <CardHeader className='grid grid-cols-2 gap-32 items-center'>
+                    <CardTitle className="text-lg font-semibold dark:text-gray-100">Budget Goals</CardTitle>
+                    <Button variant="link" asChild size="sm">
+                      <Link to="/budgets" className="text-sm dark:text-blue-400 dark:hover:text-blue-300">
+                        View All
+                        <ArrowRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Button>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
                     <div className="space-y-4 max-h-[400px] overflow-auto fade-mask pr-1">
@@ -105,7 +94,7 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               </div>
-              
+
               <div className="md:col-span-3 animate-fade-in-right animate-delay-[600ms]">
                 <TransactionList expenses={sampleExpenses} limit={5} />
               </div>
@@ -113,7 +102,7 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
-      
+
       {/* App Info Slider */}
       <AppInfoSlider />
     </div>

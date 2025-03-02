@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import { SplashScreen } from "./components/SplashScreen";
 import GoalsPage from "./pages/GoalsPage";
 import FutureValuePage from "./pages/FutureValuePage";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+         <ThemeProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -56,6 +58,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

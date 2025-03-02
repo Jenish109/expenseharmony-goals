@@ -125,11 +125,11 @@ const RecurringExpenses = () => {
   };
   
   return (
-    <div className="min-h-screen bg-slate-50 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative">
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6">
+        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6">
           <div className="max-w-4xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <div className="flex justify-between items-center">
@@ -145,7 +145,7 @@ const RecurringExpenses = () => {
             </header>
             
             {recurringExpenses.length === 0 ? (
-              <Card className="border animate-fade-in">
+              <Card className="borderbg-white/90 backdrop-blur animate-scale-in dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-lg font-medium mb-2">No recurring expenses yet</p>
@@ -163,7 +163,7 @@ const RecurringExpenses = () => {
                 {recurringExpenses.map((expense, index) => (
                   <Card 
                     key={expense.id} 
-                    className={`border animate-fade-in animate-delay-[${index * 100}ms] ${!expense.active ? 'opacity-70' : ''}`}
+                    className={`border bg-white/90 dark:border-slate-800 dark:bg-slate-950 animate-fade-in  animate-delay-[${index * 100}ms] ${!expense.active ? 'opacity-70' : ''}`}
                   >
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-start">
@@ -216,7 +216,7 @@ const RecurringExpenses = () => {
               </div>
             )}
             
-            <Card className="border mt-8 bg-primary/5 animate-fade-in">
+            <Card className="border mt-8 bg-primary/5 dark:bg-slate-800 animate-fade-in">
               <CardHeader>
                 <CardTitle className="text-lg">About Recurring Expenses</CardTitle>
               </CardHeader>

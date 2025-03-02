@@ -104,11 +104,11 @@ const Expenses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative">
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
+        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
@@ -132,7 +132,7 @@ const Expenses = () => {
                     <Button 
                       variant="outline" 
                       onClick={() => setShowFutureValueDialog(true)}
-                      className="bg-white hover:bg-white/80"
+                      className="bg-white hover:bg-white/80 dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                       Simulate
                     </Button>
@@ -161,7 +161,7 @@ const Expenses = () => {
                   className="w-10 h-10"
                   title={sortOrder === 'asc' ? "Sort Newest First" : "Sort Oldest First"}
                 >
-                  <ArrowUpDown className="h-4 w-4" />
+                  <ArrowUpDown className="h-4 w-4 " />
                 </Button>
                 
                 <div className="relative">
@@ -298,6 +298,8 @@ const Expenses = () => {
                 type="date"
                 value={newExpense.date}
                 onChange={(e) => setNewExpense({...newExpense, date: e.target.value})}
+                className="dark:[&::-webkit-calendar-picker-indicator]:invert dark:[&::-webkit-calendar-picker-indicator]:opacity-100"
+
               />
             </div>
           </div>
@@ -322,22 +324,22 @@ const Expenses = () => {
 
       {/* Future Value Simulator Dialog */}
       <Dialog open={showFutureValueDialog} onOpenChange={setShowFutureValueDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Future Value Simulator</DialogTitle>
-            <DialogDescription>
-              See how your expense could grow if invested instead
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <FutureValueSimulator 
-              expense={selectedExpense ? sampleExpenses.find(e => e.id === selectedExpense) : undefined} 
-              amount={10}
-              onClose={() => setShowFutureValueDialog(false)}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
+            <DialogContent className="max-w-md md:max-w-2xl  max-h-[80vh] md:max-h-[90vh] overflow-y-auto ">
+                <DialogHeader>
+                    <DialogTitle>Future Value Simulator</DialogTitle>
+                    <DialogDescription> 
+                        See how your expense could grow if invested instead
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="p-2"> {/* Added padding here */}
+                    <FutureValueSimulator 
+                        expense={selectedExpense ? sampleExpenses.find(e => e.id === selectedExpense) : undefined} 
+                        amount={10}
+                        onClose={() => setShowFutureValueDialog(false)}
+                    />
+                </div>
+            </DialogContent>
+        </Dialog>
     </div>
   );
 };

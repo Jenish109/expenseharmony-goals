@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Rocket, ChartBar, Coins, Info } from 'lucide-react';
@@ -54,20 +53,21 @@ export const AppInfoSlider = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-y-0 right-0 z-50 w-80 bg-white shadow-xl"
+            className="fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-slate-800 dark:text-white shadow-xl"
           >
-            {/* Close button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            {/* Header with Close button and App Info */}
+            <div className="flex justify-between items-center p-4">
+              <h2 className="text-xl font-bold">App Info</h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
 
-            <div className="h-full p-6 pt-12 flex flex-col">
-              <h2 className="text-xl font-bold mb-6">App Info</h2>
-              
-              <div className="flex-1 relative overflow-hidden">
+            <div className="h-[550px] p-6 flex flex-col">
+              <div className="flex-1 mt-14 relative overflow-hidden">
                 {slides.map((slide, index) => (
                   <motion.div
                     key={index}
@@ -81,7 +81,7 @@ export const AppInfoSlider = () => {
                     }`}
                   >
                     <div className="flex flex-col items-center text-center">
-                      <div className="mb-4 p-3 rounded-full bg-primary/10">
+                      <div className="mb-4 p-3 rounded-full bg-primary/10 dark:bg-primary/5">
                         {slide.icon}
                       </div>
                       <h3 className="text-lg font-semibold mb-2">{slide.title}</h3>
@@ -99,7 +99,7 @@ export const AppInfoSlider = () => {
                       key={index}
                       onClick={() => setCurrentSlide(index)}
                       className={`w-2 h-2 rounded-full transition-colors ${
-                        currentSlide === index ? "bg-primary" : "bg-muted"
+                        currentSlide === index ? "bg-primary" : "bg-muted dark:bg-gray-600"
                       }`}
                       aria-label={`Go to slide ${index + 1}`}
                     />
@@ -109,7 +109,7 @@ export const AppInfoSlider = () => {
                 <Button 
                   onClick={handleNext}
                   variant="outline" 
-                  className="w-full gap-2"
+                  className="w-full gap-2 bg-stone-950 hover:bg-stone-900 hover:text-white dark:bg-[#020612] dark:hover:bg-[#020918] text-white "
                 >
                   Next tip
                   <ChevronRight className="h-4 w-4" />

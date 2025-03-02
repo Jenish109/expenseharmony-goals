@@ -15,7 +15,7 @@ export function SpendingChart() {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 shadow-md rounded-lg border">
+        <div className="bg-white dark:bg-slate-900 p-3 shadow-md rounded-lg border">
           <p className="text-sm font-medium">{`${payload[0].name}`}</p>
           <p className="text-sm font-semibold">${payload[0].value.toFixed(2)}</p>
         </div>
@@ -27,7 +27,7 @@ export function SpendingChart() {
   const PieCustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 shadow-md rounded-lg border">
+        <div className="bg-white dark:bg-slate-900 p-3 shadow-md rounded-lg border">
           <p className="text-sm font-medium">{`${payload[0].name}`}</p>
           <p className="text-sm font-semibold">${payload[0].value.toFixed(2)}</p>
         </div>
@@ -46,7 +46,7 @@ export function SpendingChart() {
               className={cn(
                 "px-3 py-1 text-sm rounded-md transition-colors",
                 chartType === 'bar' 
-                  ? "bg-white shadow-sm" 
+                  ? "bg-white dark:bg-gray-700 shadow-sm" 
                   : "text-muted-foreground hover:text-foreground"
               )}
               onClick={() => setChartType('bar')}
@@ -57,7 +57,7 @@ export function SpendingChart() {
               className={cn(
                 "px-3 py-1 text-sm rounded-md transition-colors",
                 chartType === 'pie' 
-                  ? "bg-white shadow-sm" 
+                  ? "bg-white dark:bg-gray-700 shadow-sm" 
                   : "text-muted-foreground hover:text-foreground"
               )}
               onClick={() => setChartType('pie')}

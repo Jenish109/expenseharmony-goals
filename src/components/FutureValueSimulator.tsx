@@ -62,7 +62,7 @@ export function FutureValueSimulator({ expense, amount, onClose }: FutureValueSi
   };
 
   return (
-    <Card className="border shadow-lg animate-fade-in">
+    <Card className="border shadow-lg animate-fade-in ">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold flex items-center">
           <TrendingUp className="h-5 w-5 mr-2 text-primary" />
@@ -145,7 +145,7 @@ export function FutureValueSimulator({ expense, amount, onClose }: FutureValueSi
             <select
               value={compoundingFrequency}
               onChange={(e) => setCompoundingFrequency(parseInt(e.target.value))}
-              className="text-sm rounded-md px-2 py-1 border"
+              className="text-sm rounded-md px-2 py-1 border dark:bg-slate-800"
             >
               <option value={1}>Annually</option>
               <option value={4}>Quarterly</option>
@@ -176,7 +176,7 @@ export function FutureValueSimulator({ expense, amount, onClose }: FutureValueSi
         </div>
 
         <div className="pt-4 space-y-3">
-          <div className="bg-muted p-4 rounded-lg">
+          <div className="bg-muted dark:bg-primary/10 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground mb-1">If you saved/invested this amount:</div>
             <div className="text-2xl font-bold">{formatCurrency(futureValue)}</div>
             <div className="text-sm text-muted-foreground">Future value in {years} years</div>

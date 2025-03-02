@@ -153,7 +153,7 @@ export function DreamGoalForecaster({ goalName = "Dream Goal", goalAmount = 1000
         </div>
         
         <div className="pt-2 space-y-3">
-          <div className="bg-muted p-4 rounded-lg">
+          <div className="bg-muted dark:bg-primary/10 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground mb-1">Required monthly savings:</div>
             <div className="text-2xl font-bold">{formatCurrency(monthlySavings)}</div>
             <div className="text-sm text-muted-foreground">
