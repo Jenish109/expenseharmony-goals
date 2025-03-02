@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,25 +10,20 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Download, RefreshCw, Trash2, Save, Moon, Sun, Coins } from "lucide-react";
 import { toast } from "sonner";
-import { useTheme } from "@/context/ThemeContext";
 
 const Settings = () => {
-  const { theme, toggleTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState(false);
   const [currency, setCurrency] = useState("USD");
   const [monthlyBudget, setMonthlyBudget] = useState("5000");
   
-  // Load saved settings on component mount
-  useEffect(() => {
-    const savedCurrency = localStorage.getItem("currency");
-    const savedBudget = localStorage.getItem("monthlyBudget");
-    
-    if (savedCurrency) setCurrency(savedCurrency);
-    if (savedBudget) setMonthlyBudget(savedBudget);
-  }, []);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    toast.success(`${!darkMode ? "Dark" : "Light"} mode activated`);
+    // In a real app, we would apply theme changes
+  };
   
   const handleSaveSettings = () => {
-    localStorage.setItem("currency", currency);
-    localStorage.setItem("monthlyBudget", monthlyBudget);
+    // In a real app, save to local storage or database
     toast.success("Settings saved successfully");
   };
   
@@ -68,7 +63,7 @@ const Settings = () => {
   };
   
   return (
-    <div className="min-h-screen bg-background text-foreground relative">
+    <div className="min-h-screen bg-slate-50 relative">
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
@@ -89,13 +84,13 @@ const Settings = () => {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                      {darkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
                       <Label htmlFor="dark-mode">Dark Mode</Label>
                     </div>
                     <Switch 
                       id="dark-mode" 
-                      checked={theme === "dark"} 
-                      onCheckedChange={toggleTheme} 
+                      checked={darkMode} 
+                      onCheckedChange={toggleDarkMode} 
                     />
                   </div>
                 </CardContent>
