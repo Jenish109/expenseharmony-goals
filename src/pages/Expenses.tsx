@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { sampleExpenses, ExpenseCategory, categoryInfo } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
@@ -161,7 +162,7 @@ const Expenses = () => {
                   )}
                   onClick={() => setSelectedCategory(category)}
                 >
-                  {category === 'all' ? 'All' : categoryInfo[category].label}
+                  {category === 'all' ? 'All' : categoryInfo[category as ExpenseCategory].label}
                 </button>
               ))}
             </div>

@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Expenses from "./pages/Expenses";
 import Budgets from "./pages/Budgets";
+import Settings from "./pages/Settings";
+import RecurringExpenses from "./pages/RecurringExpenses";
 import NotFound from "./pages/NotFound";
 import { SplashScreen } from "./components/SplashScreen";
 
@@ -43,6 +45,8 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/budgets" element={<Budgets />} />
+            <Route path="/recurring" element={<RecurringExpenses />} />
+            <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

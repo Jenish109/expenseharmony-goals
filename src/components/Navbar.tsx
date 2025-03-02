@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ChevronDown, ChevronUp, LayoutDashboard, DollarSign, PieChart } from 'lucide-react';
+import { ChevronDown, ChevronUp, LayoutDashboard, DollarSign, PieChart, Settings, CalendarClock, Cog } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +24,16 @@ export function Navbar() {
       icon: PieChart,
       href: '/budgets',
     },
+    {
+      title: 'Recurring',
+      icon: CalendarClock,
+      href: '/recurring',
+    },
+    {
+      title: 'Settings',
+      icon: Cog,
+      href: '/settings',
+    }
   ];
 
   return (
