@@ -17,11 +17,11 @@ export function Navbar() {
   const { pathname: path } = useLocation();
 
   return (
-    <aside className="md:w-60 border-r flex-none hidden md:block bg-sidebar">
-      <div className="p-3 flex flex-col h-full">
+    <aside className="md:w-60 border-r flex-none hidden md:block bg-sidebar ">
+      <div className="p-3 flex flex-col h-screen">
         <div className="flex items-center justify-between">
           <Link to="/" className="font-bold text-lg">
-            CASHFLOW
+            EXPENSE TRACKER
           </Link>
           <button
             className="md:hidden rounded-lg p-2"

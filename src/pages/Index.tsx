@@ -35,7 +35,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6">
+        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
