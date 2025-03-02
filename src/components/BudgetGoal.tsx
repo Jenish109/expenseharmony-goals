@@ -33,7 +33,7 @@ export function BudgetGoal({ budget }: BudgetGoalProps) {
   };
 
   return (
-    <Card className="overflow-hidden card-hover border-0 shadow-md bg-white/90 backdrop-blur animate-scale-in">
+    <Card className="overflow-hidden card-hover border animate-scale-in">
       <CardContent className="p-5">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
