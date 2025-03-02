@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { SpendingChart } from "@/components/SpendingChart";
 import { TransactionList } from "@/components/TransactionList";
 import { BudgetGoal } from "@/components/BudgetGoal";
+import { AppInfoSlider } from "@/components/AppInfoSlider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUp, ArrowDown } from "lucide-react";
 
@@ -112,6 +113,9 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
+      
+      {/* App Info Slider */}
+      <AppInfoSlider />
     </div>
   );
 };
