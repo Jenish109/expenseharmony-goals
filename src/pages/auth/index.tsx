@@ -2,6 +2,7 @@
 import Navigation from "@/components/auth/Navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { Routes } from "@/lib/constants";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -31,16 +32,16 @@ const Index = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center slide-in-from-bottom">
               {isAuthenticated ? (
-                <Link to="/profile">
+                <Link to={Routes.DASHBOARD}>
                   <Button size="lg" className="w-full sm:w-auto">
-                    View Profile
+                    Dashboard
                   </Button>
                 </Link>
               ) : (
                 <>
                   <Link to="/signup">
                     <Button size="lg" className="w-full sm:w-auto">
-                      Get Started
+                      Get Starteds
                     </Button>
                   </Link>
                   <Link to="/login">

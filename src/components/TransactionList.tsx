@@ -13,16 +13,14 @@ interface TransactionListProps {
   onExpenseClick?: (expenseId: string) => void;
 }
 
-export function TransactionList({ expenses, limit, title = "Recent Transactions", onExpenseClick }: TransactionListProps) {
-  // Get the most recent transactions, limited by the limit prop
-  const recentExpenses = limit ? expenses.slice(0, limit) : expenses;
+export function TransactionList({ expenses, limit, title = "Recent Transactions", onExpenseClick  }: TransactionListProps) {
 
   return (
     <Card className="border animate-fade-in">
       <CardHeader className={title ? 'pb-2' : 'sr-only'}>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-          {limit && expenses.length > limit && (
+          {limit && expenses?.length > limit && (
             <Button variant="link" asChild size="sm">
               <Link to="/expenses" className="text-sm">
                 View All
@@ -34,14 +32,14 @@ export function TransactionList({ expenses, limit, title = "Recent Transactions"
       </CardHeader>
       <CardContent className={title ? 'pt-0' : 'pt-4'}>
         <div className="space-y-3">
-          {recentExpenses.length === 0 ? (
+          {expenses?.length === 0 ? (
             <p className="text-center py-8 text-muted-foreground">No expenses found</p>
           ) : (
-            recentExpenses.map((expense) => (
+            expenses?.map((expense) => (
               <div 
-                key={expense.id} 
+                key={expense.expense_id} 
                 className={onExpenseClick ? "cursor-pointer hover:opacity-90 transition-opacity" : ""}
-                onClick={() => onExpenseClick && onExpenseClick(expense.id)}
+                onClick={() => onExpenseClick && onExpenseClick(expense?.expense_id)}
               >
                 <ExpenseCard expense={expense} />
               </div>

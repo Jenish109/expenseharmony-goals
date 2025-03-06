@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
+import { Routes } from "@/lib/constants";
 
 const LoginForm = () => {
-  const navigate = useNavigate();
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ const LoginForm = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -27,7 +28,7 @@ const LoginForm = () => {
 
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      navigate(Routes.DASHBOARD);
     } catch (error) {
       // Error handling is done in the auth context
       setIsLoading(false);

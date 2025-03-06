@@ -9,7 +9,7 @@ const COLORS = ['#4CAF50', '#2196F3', '#9C27B0', '#FF9800', '#607D8B', '#E91E63'
 
 type ChartType = 'bar' | 'pie';
 
-export function SpendingChart() {
+export function SpendingChart({chartdata}) {
   const [chartType, setChartType] = useState<ChartType>('bar');
   
   const CustomTooltip = ({ active, payload }: any) => {
@@ -72,7 +72,7 @@ export function SpendingChart() {
           {chartType === 'bar' ? (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={monthlySpending}
+                data={chartdata?.monthlySpending}
                 margin={{ top: 20, right: 0, left: 0, bottom: 10 }}
               >
                 <XAxis 
@@ -93,7 +93,7 @@ export function SpendingChart() {
                   radius={[4, 4, 0, 0]}
                   barSize={30}
                 >
-                  {monthlySpending.map((entry, index) => (
+                  {chartdata?.monthlySpending.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill="#3b82f6" fillOpacity={entry.amount > 0 ? 0.8 : 0.2} />
                   ))}
                 </Bar>
@@ -103,16 +103,16 @@ export function SpendingChart() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={categorySpending}
+                  data={chartdata?.categorySpending}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
                   outerRadius={90}
                   paddingAngle={2}
-                  dataKey="value"
+                  dataKey="current_amount"
                   labelLine={false}
                 >
-                  {categorySpending.map((entry, index) => (
+                  {chartdata?.categorySpending.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>

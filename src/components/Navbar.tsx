@@ -35,10 +35,10 @@ export function Navbar() {
           <ul className="space-y-1">
             <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                  path === "/"
+                  path === "/dashboard"
                     ? "bg-sidebar-primary text-sidebar-primary-foreground"
                     : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 )}

@@ -1,28 +1,37 @@
 
 // Sample data for the budgeting app
-export type ExpenseCategory = 
-  | 'food' 
-  | 'transport' 
-  | 'housing' 
-  | 'entertainment' 
-  | 'utilities' 
-  | 'shopping' 
+export type ExpenseCategory =
+  | 'food'
+  | 'transport'
+  | 'housing'
+  | 'entertainment'
+  | 'utilities'
+  | 'shopping'
   | 'health'
   | 'other';
 
 export interface Expense {
-  id: string;
+  expense_id: string;
+  category_data: {
+    category_id: string;
+    category_name: string;
+    catagory_color: string;
+  };
+  expense_name: string;
   amount: number;
-  category: ExpenseCategory;
-  description: string;
-  date: string;
+  created_at: string
 }
 
 export interface Budget {
-  id: string;
-  category: ExpenseCategory;
   amount: number;
-  spent: number;
+  budget_id: number;
+  category_data: {
+    category_id: string;
+    category_name: string;
+    catagory_color: string;
+  };
+  created_at: string;
+  current_amount: number;
 }
 
 export interface MonthlySpending {

@@ -63,14 +63,14 @@ const Navigation = () => {
                   className="relative h-8 w-8 rounded-full"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-primary">
-                    {user?.name.charAt(0).toUpperCase()}
+                    {'Jenish'}
                   </div>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-primary">
-                    {user?.name.charAt(0).toUpperCase()}
+                    {'Jenish'}
                   </div>
                   <div className="flex flex-col space-y-0.5">
                     <p className="text-sm font-medium">{user?.name}</p>

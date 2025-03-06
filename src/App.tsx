@@ -15,11 +15,11 @@ import GoalsPage from "./pages/GoalsPage";
 import FutureValuePage from "./pages/FutureValuePage";
 import { ThemeProvider } from "./context/ThemeContext";
 import PrivateRoute from "./components/auth/PrivateRoute";
-import Login from "./pages/auth/login";
 import Signup from "./pages/auth/SignUp";
 import Profile from "./pages/auth/Profile";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Index";
+import Login from "./pages/auth/Login";
 
 const queryClient = new QueryClient();
 
@@ -69,57 +69,57 @@ const App = () => {
                 <Route
                   path="/dashboard"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <Dashboard />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/expenses"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <Expenses />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/budgets"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <Budgets />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/recurring"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <RecurringExpenses />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/goals"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <GoalsPage />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/future-value"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <FutureValuePage />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
                 <Route
                   path="/settings"
                   element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                       <Settings />
-                    // {/* </PrivateRoute> */}
+                    </PrivateRoute>
                   }
                 />
 

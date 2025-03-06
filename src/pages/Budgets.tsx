@@ -1,6 +1,5 @@
-
-import { useState } from 'react';
-import { sampleBudgets } from "@/lib/data";
+import { useEffect, useState } from "react";
+import { ExpenseCategory, sampleBudgets } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
 import { BudgetGoal } from "@/components/BudgetGoal";
 import { Button } from "@/components/ui/button";
@@ -9,40 +8,85 @@ import { Progress } from "@/components/ui/progress";
 import { Plus, ArrowUp, ArrowDown, DollarSign } from "lucide-react";
 import { TransactionList } from "@/components/TransactionList";
 import { Input } from "@/components/ui/input";
-
+import { useDispatch, useSelector } from "react-redux";
+import { add_budget, fetch_budget_data } from "@/redux/budget/budgetThunk";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { capitalizeFirstLetter } from "@/helper/helper";
+import { fetch_category_data } from "@/redux/expenses/expenseThunk";
+import { set } from "date-fns";
 const Budgets = () => {
-  const [filterQuery, setFilterQuery] = useState('');
+  const budgetData = useSelector((state: any) => state.budget.data.data);
+  const category_data = useSelector(
+    (state: any) => state.expenses.catagory_list.data
+  );
 
-  // Calculate total budget and total spent
-  const totalBudget = sampleBudgets.reduce((sum, budget) => sum + budget.amount, 0);
-  const totalSpent = sampleBudgets.reduce((sum, budget) => sum + budget.spent, 0);
-  const percentUsed = Math.round((totalSpent / totalBudget) * 100);
-  
-  // Filter budgets based on search query
-  const filteredBudgets = sampleBudgets.filter(
-    budget => budget.category.toLowerCase().includes(filterQuery.toLowerCase())
+  const [showAddBudgetDialog, setShowAddBudgetDialog] = useState(false);
+  const [newBudget, setNewBudget] = useState({
+   
+    amount: "",
+    category: "",
+    date: new Date().toISOString().split("T")[0],
+  });
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetch_budget_data());
+    dispatch(fetch_category_data());
+  }, [dispatch]);
+  const [filterQuery, setFilterQuery] = useState("");
+
+
+  const percentUsed = Math.round(
+    (budgetData?.spent_amount / budgetData?.total_budget) * 100
   );
 
   // Format currency
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const handleAddExpense = () => {
+    dispatch(add_budget(newBudget));
+
+    toast.success("Budget added successfully");
+
+    // Show future value impact notification
+    const amount = parseFloat(newBudget.amount);
+    const futureAmount = amount * 1.5; // Simple approximation for notification 
+
+    setNewBudget({
+      amount: "",
+      category: "",
+      date: new Date().toISOString().split("T")[0],
+    });
+    setShowAddBudgetDialog(false);
   };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative">
       <div className="flex flex-col md:flex-row">
         <Navbar />
-        
+
         <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-8 h-screen overflow-scroll">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
-              <p className="text-muted-foreground mt-1">Set and track your spending limits</p>
+              <p className="text-muted-foreground mt-1">
+                Set and track your spending limits
+              </p>
             </header>
 
             {/* Budget Summary Cards */}
@@ -50,39 +94,57 @@ const Budgets = () => {
               <Card className="border shadow-md  backdrop-blur animate-scale-in bg-white/90 dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="p-6 ">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-muted-foreground">Total Budget</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">
+                      Total Budget
+                    </h3>
                     <div className="p-2 bg-primary/10 rounded-full">
                       <DollarSign className="h-5 w-5 text-primary" />
                     </div>
                   </div>
-                  <div className="text-2xl font-bold">{formatCurrency(totalBudget)}</div>
-                  <div className="text-xs text-muted-foreground mt-1">Monthly allocation</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(budgetData?.total_budget || 0)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Monthly allocation
+                  </div>
                 </CardContent>
               </Card>
 
               <Card className="border shadow-md bg-white/90 backdrop-blur animate-scale-in dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-muted-foreground">Spent So Far</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">
+                      Spent So Far
+                    </h3>
                     <div className="p-2 bg-red-500/10 rounded-full">
                       <ArrowUp className="h-5 w-5 text-red-500" />
                     </div>
                   </div>
-                  <div className="text-2xl font-bold">{formatCurrency(totalSpent)}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{percentUsed}% of total budget</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(budgetData?.spent_amount || 0)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {percentUsed}% of total budget
+                  </div>
                 </CardContent>
               </Card>
 
               <Card className="border shadow-md bg-white/90 backdrop-blur animate-scale-in dark:border-slate-800 dark:bg-slate-950">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-muted-foreground">Remaining</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">
+                      Remaining
+                    </h3>
                     <div className="p-2 bg-green-500/10 rounded-full">
                       <ArrowDown className="h-5 w-5 text-green-500" />
                     </div>
                   </div>
-                  <div className="text-2xl font-bold">{formatCurrency(totalBudget - totalSpent)}</div>
-                  <div className="text-xs text-muted-foreground mt-1">Available to spend</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(budgetData?.remaining_amount || 0)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Available to spend
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -91,8 +153,14 @@ const Budgets = () => {
             <Card className="mb-8 border shadow-lg bg-white/95 backdrop-blur-md animate-fade-in dark:border-slate-800 dark:bg-slate-950">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-xl font-semibold">Monthly Budget Overview</CardTitle>
-                  <Button size="sm" className="shadow-sm">
+                  <CardTitle className="text-xl font-semibold">
+                    Monthly Budget Overview
+                  </CardTitle>
+                  <Button
+                    size="sm"
+                    className="shadow-sm"
+                    onClick={() => setShowAddBudgetDialog(true)}
+                  >
                     <Plus className="h-4 w-4 mr-1" />
                     Add Budget
                   </Button>
@@ -103,22 +171,36 @@ const Budgets = () => {
                   <div className="flex flex-col md:flex-row justify-between mb-2">
                     <div className="text-sm text-muted-foreground flex items-center gap-2">
                       <div className="h-3 w-3 rounded-full bg-primary"></div>
-                      <span>Used: {formatCurrency(totalSpent)}</span>
+                      <span>
+                        Used: {formatCurrency(budgetData?.spent_amount)}
+                      </span>
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center gap-2">
                       <div className="h-3 w-3 rounded-full bg-slate-200"></div>
-                      <span>Remaining: {formatCurrency(totalBudget - totalSpent)}</span>
+                      <span>
+                        Remaining:{" "}
+                        {formatCurrency(budgetData?.remaining_amount)}
+                      </span>
                     </div>
                   </div>
-                  
+
                   <Progress value={percentUsed} className="h-3 bg-slate-200" />
-                  
+
                   <div className="flex justify-between text-sm mt-1">
-                    <span className={percentUsed > 80 ? "text-red-500 font-medium" : percentUsed > 50 ? "text-amber-500 font-medium" : "text-green-500 font-medium"}>
+                    <span
+                      className={
+                        percentUsed > 80
+                          ? "text-red-500 font-medium"
+                          : percentUsed > 50
+                          ? "text-amber-500 font-medium"
+                          : "text-green-500 font-medium"
+                      }
+                    >
                       {percentUsed}% used
                     </span>
                     <span className="text-muted-foreground">
-                      {formatCurrency(totalSpent)} of {formatCurrency(totalBudget)}
+                      {formatCurrency(budgetData?.spent_amount)} of{" "}
+                      {formatCurrency(budgetData?.total_budget)}
                     </span>
                   </div>
                 </div>
@@ -141,13 +223,108 @@ const Budgets = () => {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredBudgets.map((budget, index) => (
-                  <div key={budget.id} className={`animate-fade-in`} style={{ animationDelay: `${index * 50}ms` }}>
+                {budgetData?.budget_list?.map((budget, index) => (
+                  <div
+                    key={budget.id}
+                    className={`animate-fade-in`}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
                     <BudgetGoal budget={budget} />
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Add Expense Dialog */}
+            <Dialog
+              open={showAddBudgetDialog}
+              onOpenChange={setShowAddBudgetDialog}
+            >
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Add New Budget</DialogTitle>
+                  <DialogDescription>
+                    Add your budget for the month
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label htmlFor="amount" className="text-sm font-medium">
+                      Amount
+                    </label>
+                    <Input
+                      id="amount"
+                      placeholder="0.00"
+                      value={newBudget.amount}
+                      onChange={(e) =>
+                        setNewBudget({ ...newBudget, amount: e.target.value })
+                      }
+                      type="number"
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="category" className="text-sm font-medium">
+                      Category
+                    </label>
+                    <select
+                      id="category"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      value={newBudget.category}
+                      onChange={(e) => {
+                        console.log(e.target);
+                        setNewBudget({
+                          ...newBudget,
+                          category: e.target.value ,
+                        });
+                      }}
+                    >
+                      {category_data
+                        ?.filter((cat) => cat !== "all")
+                        .map((category) => (
+                          <option
+                            key={category?.category_id}
+                            value={category?.category_id}
+                          >
+                            {capitalizeFirstLetter(category?.category_name)}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  {/* <div className="space-y-2">
+                    <label htmlFor="date" className="text-sm font-medium">
+                      Date
+                    </label>
+                    <Input
+                      id="date"
+                      type="date"
+                      value={newBudget.date}
+                      onChange={(e) =>
+                        setNewBudget({ ...newBudget, date: e.target.value })
+                      }
+                      className="dark:[&::-webkit-calendar-picker-indicator]:invert dark:[&::-webkit-calendar-picker-indicator]:opacity-100"
+                    />
+                  </div> */}
+                </div>
+                <DialogFooter className="sm:justify-end">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setShowAddBudgetDialog(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleAddExpense}
+                    disabled={!newBudget.amount || !newBudget.category}
+                  >
+                    Add Budget
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </main>
       </div>
