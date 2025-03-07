@@ -1,4 +1,3 @@
-
 // Sample data for the budgeting app
 export type ExpenseCategory =
   | 'food'
@@ -10,28 +9,27 @@ export type ExpenseCategory =
   | 'health'
   | 'other';
 
+export interface CategoryData {
+  category_id: string;
+  category_name: string;
+  category_color: string;
+}
+
 export interface Expense {
   expense_id: string;
-  category_data: {
-    category_id: string;
-    category_name: string;
-    catagory_color: string;
-  };
+  category_data: CategoryData;
   expense_name: string;
   amount: number;
-  created_at: string
+  date: string;
+  created_at: string;
 }
 
 export interface Budget {
+  id: string;
+  category_data: CategoryData;
   amount: number;
-  budget_id: number;
-  category_data: {
-    category_id: string;
-    category_name: string;
-    catagory_color: string;
-  };
-  created_at: string;
-  current_amount: number;
+  spent: number;
+  month: string;
 }
 
 export interface MonthlySpending {
@@ -42,44 +40,49 @@ export interface MonthlySpending {
 // Category display information
 export const categoryInfo = {
   food: {
-    label: 'Food & Dining',
-    color: '#4CAF50',
-    icon: 'dollar-sign'
+    name: "Food",
+    color: "#FF6B6B",
+    icon: "🍔"
   },
-  transport: {
-    label: 'Transportation',
-    color: '#2196F3',
-    icon: 'dollar-sign'
-  },
-  housing: {
-    label: 'Housing',
-    color: '#9C27B0',
-    icon: 'dollar-sign'
+  transportation: {
+    name: "Transportation",
+    color: "#4ECDC4",
+    icon: "🚗"
   },
   entertainment: {
-    label: 'Entertainment',
-    color: '#FF9800',
-    icon: 'dollar-sign'
-  },
-  utilities: {
-    label: 'Utilities',
-    color: '#607D8B',
-    icon: 'dollar-sign'
+    name: "Entertainment",
+    color: "#45B7D1",
+    icon: "🎮"
   },
   shopping: {
-    label: 'Shopping',
-    color: '#E91E63',
-    icon: 'dollar-sign'
+    name: "Shopping",
+    color: "#96CEB4",
+    icon: "🛍️"
+  },
+  utilities: {
+    name: "Utilities",
+    color: "#FFEEAD",
+    icon: "💡"
   },
   health: {
-    label: 'Health & Medical',
-    color: '#00BCD4',
-    icon: 'dollar-sign'
+    name: "Health",
+    color: "#D4A5A5",
+    icon: "🏥"
+  },
+  education: {
+    name: "Education",
+    color: "#9B9B9B",
+    icon: "📚"
+  },
+  housing: {
+    name: "Housing",
+    color: "#A8E6CE",
+    icon: "🏠"
   },
   other: {
-    label: 'Other',
-    color: '#9E9E9E',
-    icon: 'dollar-sign'
+    name: "Other",
+    color: "#DCEDC2",
+    icon: "📦"
   }
 };
 

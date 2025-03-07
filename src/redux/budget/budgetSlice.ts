@@ -16,10 +16,10 @@ const getBudgetData = async (builder) => {
         })
         .addCase(fetch_budget_data.fulfilled, (state, action) => {
 
-            console.log("action.payload", action.payload);
 
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.budget_list = action.payload.data.budget_list;
         })
         .addCase(fetch_budget_data.rejected, (state, action) => {
             state.loading = false;
@@ -27,17 +27,20 @@ const getBudgetData = async (builder) => {
         });
 }
 
-
-
 const budgetSlice = createSlice({
     name: "expenses",
     initialState: {
         data: [],
+        budget_list: [],
         catagory_list: [],
         loading: false,
         error: null
     },
     reducers: {
+        addBudgetInLocal: (state, action) => {
+
+            state.budget_list.unshift(action.payload);
+        },
         setBudget: (state, action) => {
             state.data = action.payload;
         },
@@ -52,5 +55,5 @@ const budgetSlice = createSlice({
     },
 })
 
-export const { setBudget, resetBudget } = budgetSlice.actions;
+export const { setBudget, resetBudget, addBudgetInLocal } = budgetSlice.actions;
 export default budgetSlice.reducer;

@@ -29,12 +29,6 @@ const commonApiCall = async (props) => {
     try {
         const { apiUri, method, body = {},  isAuthenticatedCall = true } = props;
 
-        console.log('apiUri ---- ', apiUri);
-        console.log('method ---- ', method);
-        console.log('body ---- ', body);
-        console.log('isAuthenticatedCall ---- ', isAuthenticatedCall);
-
-
         let headers:any = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -43,9 +37,7 @@ const commonApiCall = async (props) => {
         if (isAuthenticatedCall) {
             let getData:any = await getLocalStoreData(LocalKeys.USER_DATA);
             let { token } = getData;
-
-            console.log('token ---- ', token);  
-
+console.log('token',token)
             headers.Authorization = `Bearer ${token}`;
         }
 
@@ -61,7 +53,6 @@ const commonApiCall = async (props) => {
 
         const response = await fetch(`${Configs.BASE_URL + apiUri}`, fetchOptions);
         const responseJson = await response.json();
-        console.log('response json ----- ', responseJson);
 
         if (responseJson.response_code == 401) {
             // toast.error(responseJson.message);/

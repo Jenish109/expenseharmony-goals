@@ -1,49 +1,40 @@
-
 import { Card, CardContent } from "@/components/ui/card";
-import { capitalizeFirstLetter } from "@/helper/helper";
-import { Expense, categoryInfo } from "@/lib/data";
 import { DollarSign } from "lucide-react";
+import { Expense } from "@/lib/data";
 
 interface ExpenseCardProps {
   expense: Expense;
 }
 
-
 export function ExpenseCard({ expense }: ExpenseCardProps) {
-  const { expense_id, category_data, expense_name, amount , created_at } = expense;
-  // const categoryData = categoryInfo[category];
+  const { expense_name, amount, category_data, date } = expense;
+  const formattedAmount = amount;
 
-  // Format date from ISO string to readable format
-  const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric'
-  });
-  console.log('color --- ',category_data)
   return (
-    <Card key={expense_id} className="overflow-hidden card-hover border animate-scale-in">
-      <CardContent className="p-0">
-        <div className="flex items-start p-4">
-          <div 
-            className="h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0 mr-4"
-            style={{ backgroundColor: `${category_data?.category_color}20` }}
-          >
-            <DollarSign 
-              size={18} 
-              className="text-foreground"
-              style={{ color: category_data?.category_color }} 
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="font-medium text-sm truncate">{capitalizeFirstLetter(expense_name)}</p>
-                <p className="text-xs text-muted-foreground">{capitalizeFirstLetter(category_data?.category_name)}</p>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold">${amount}</p>
-                <p className="text-xs text-muted-foreground">{formattedDate}</p>
-              </div>
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between space-x-4">
+          <div className="flex items-center space-x-4">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: category_data.category_color }}
+            >
+              <DollarSign className="w-4 h-4 text-white" />
             </div>
+            <div>
+              <p className="text-sm font-medium leading-none">{expense_name}</p>
+              <p className="text-sm text-muted-foreground">
+                {category_data.category_name}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col items-end">
+            <p className="text-sm font-medium">
+              ${formattedAmount}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {new Date(date).toLocaleDateString()}
+            </p>
           </div>
         </div>
       </CardContent>

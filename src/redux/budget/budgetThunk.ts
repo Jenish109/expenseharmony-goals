@@ -3,7 +3,7 @@ import { API } from "@/lib/constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 
-const fetch_budget_data = createAsyncThunk<any, any>(
+const fetch_budget_data:any = createAsyncThunk<any, any>(
     "dashboard/fetch_budget_data",
     async (tempData, thunkAPI) => {
         console.log("fetch_budget_data called with tempData:", tempData);
@@ -38,7 +38,7 @@ const fetch_budget_data = createAsyncThunk<any, any>(
 );
 
 
-const add_budget = createAsyncThunk<any, any>(
+const add_budget:any = createAsyncThunk<any, any>(
     "dashboard/add_budget",
     async (tempData, thunkAPI) => {
         console.log("add expense called with tempData:", tempData);
@@ -51,7 +51,7 @@ const add_budget = createAsyncThunk<any, any>(
                 apiUri: API.ADD_BUDGET,
                 method: "POST",
                 body: {
-                    category_id: tempData.category,
+                    category_id: tempData.category_data.category_id,
                     budget_amount: tempData.amount,
                 },
                 isAuthenticatedCall: true,

@@ -22,17 +22,26 @@ import { toast } from "sonner";
 import { capitalizeFirstLetter } from "@/helper/helper";
 import { fetch_category_data } from "@/redux/expenses/expenseThunk";
 import { set } from "date-fns";
+import { addBudgetInLocal } from "@/redux/budget/budgetSlice";
 const Budgets = () => {
-  const budgetData = useSelector((state: any) => state.budget.data.data);
+  const budgetData = useSelector((state: any) => state.budget.data);
+  const budget_list = useSelector(
+    (state: any) => state.budget.budget_list
+  );
   const category_data = useSelector(
     (state: any) => state.expenses.catagory_list.data
   );
 
   const [showAddBudgetDialog, setShowAddBudgetDialog] = useState(false);
   const [newBudget, setNewBudget] = useState({
-   
-    amount: "",
-    category: "",
+    amount: null,
+    budget_id: null,
+    category_data: {
+      category_id: null,
+      category_name: "",
+      category_color: "",
+    },
+    current_amount: null,
     date: new Date().toISOString().split("T")[0],
   });
 
@@ -42,7 +51,6 @@ const Budgets = () => {
     dispatch(fetch_category_data());
   }, [dispatch]);
   const [filterQuery, setFilterQuery] = useState("");
-
 
   const percentUsed = Math.round(
     (budgetData?.spent_amount / budgetData?.total_budget) * 100
@@ -58,18 +66,23 @@ const Budgets = () => {
     }).format(amount);
   };
 
-  const handleAddExpense = () => {
+  const handleAddBudget = () => {
     dispatch(add_budget(newBudget));
-
-    toast.success("Budget added successfully");
+    dispatch(addBudgetInLocal(newBudget));
 
     // Show future value impact notification
-    const amount = parseFloat(newBudget.amount);
-    const futureAmount = amount * 1.5; // Simple approximation for notification 
+      // const amount = parseFloat(newBudget.amount);
+      // const futureAmount = amount * 1.5; // Simple approximation for notification
 
     setNewBudget({
-      amount: "",
-      category: "",
+      amount: null,
+      budget_id: null,
+      category_data: {
+        category_id: null,
+        category_name: "",
+        category_color: "",
+      },
+      current_amount: null,
       date: new Date().toISOString().split("T")[0],
     });
     setShowAddBudgetDialog(false);
@@ -223,9 +236,9 @@ const Budgets = () => {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {budgetData?.budget_list?.map((budget, index) => (
+                {budget_list?.map((budget, index) => (
                   <div
-                    key={budget.id}
+                    key={budget.budget_id}
                     className={`animate-fade-in`}
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
@@ -271,12 +284,17 @@ const Budgets = () => {
                     <select
                       id="category"
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      value={newBudget.category}
+                      value={newBudget.category_data.category_id}
                       onChange={(e) => {
                         console.log(e.target);
+
+                        const selectedCategory = category_data.find(
+                          (cat) => cat.category_id == e.target.value
+                        );
+
                         setNewBudget({
                           ...newBudget,
-                          category: e.target.value ,
+                          category_data: selectedCategory,
                         });
                       }}
                     >
@@ -317,8 +335,8 @@ const Budgets = () => {
                   </Button>
                   <Button
                     type="button"
-                    onClick={handleAddExpense}
-                    disabled={!newBudget.amount || !newBudget.category}
+                    onClick={handleAddBudget}
+                    disabled={!newBudget.amount || !newBudget.category_data}
                   >
                     Add Budget
                   </Button>

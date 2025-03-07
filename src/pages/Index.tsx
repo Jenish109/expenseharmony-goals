@@ -176,7 +176,7 @@ const Dashboard = () => {
             <div className="grid gap-6 md:grid-cols-5">
               <div className="md:col-span-2 animate-fade-in-left animate-delay-[500ms]">
                 <Card className="border dark:border-slate-800 dark:bg-slate-950 h-full">
-                  <CardHeader className="grid grid-cols-2 gap-32 items-center">
+                  <CardHeader className="flex-row justify-between items-center">
                     <CardTitle className="text-lg font-semibold dark:text-gray-100">
                       Budget Goals
                     </CardTitle>
