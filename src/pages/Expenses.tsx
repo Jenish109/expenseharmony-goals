@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { sampleExpenses, ExpenseCategory, categoryInfo, Expense } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
 import { TransactionList } from "@/components/TransactionList";
@@ -30,6 +30,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { add_expense, fetch_category_data, fetch_expense_data } from "@/redux/expenses/expenseThunk";
 import { capitalizeFirstLetter } from "@/helper/helper";
 import { addExpenseIntoLocal, increasePage, setExpenses, setFilterCatagoryId, setSearchQuery } from "@/redux/expenses/expenseSlice";
+import _ from 'lodash';
+
 
 interface CategoryData {
   category_id: string;
@@ -85,6 +87,7 @@ const Expenses = () => {
   const search = useSelector((state: RootState) => state.expenses.search);
   const filter = useSelector((state: RootState) => state.expenses.filter);
   const loading = useSelector((state: RootState) => state.expenses.loading);
+  const expense_list_fetched = useSelector((state: any) => state.expenses.expense_list_fetched);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const dispatch = useDispatch();
 
@@ -101,7 +104,13 @@ const Expenses = () => {
   }, [selectedCategory, dispatch]);
 
   const handleAddExpense = () => {
+
+    //remove filter tab if ny selected 
+    console.log('new expense --- ',newExpense)
+    //add expense into the server
     dispatch(add_expense(newExpense));
+    //add expense into the local
+    
     dispatch(addExpenseIntoLocal(newExpense));
     setShowAddExpenseDialog(false);
     setNewExpense({
@@ -116,6 +125,8 @@ const Expenses = () => {
       date: new Date().toISOString().split("T")[0],
       created_at: new Date().toISOString()
     });
+    setSelectedCategory(null)
+
   };
 
   const handleExpenseClick = (expenseId: string) => {
@@ -123,17 +134,18 @@ const Expenses = () => {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(e.target.value));
     setSearchTerm(e.target.value);
+    debouncedSearch(e.target.value);
+
   };
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     
     // Check if user has scrolled to the bottom (with a small threshold)
-    if (scrollHeight - scrollTop <= clientHeight + 50) {
+    if (scrollHeight - scrollTop <= clientHeight + 200) {
       // Only trigger loading if not already loading
-      if (!isLoadingMore) {
+      if (!isLoadingMore && !expense_list_fetched) {
         loadMoreData();
       }
     }
@@ -146,12 +158,21 @@ const Expenses = () => {
     // For example: fetchMoreExpenses()
     
     // Simulate loading delay
-    setTimeout(() => {
+    // setTimeout(() => {
       dispatch(increasePage())
       // Add your logic to fetch and append more data
       setIsLoadingMore(false);
-    }, 1500);
+    // }, 400);
   };
+
+  const debouncedSearch = useCallback(
+    _.debounce((term) => {
+      // Your search logic here
+      dispatch(setSearchQuery(term));
+      // fetchSearchResults(term) or other logic
+    }, 500),
+    [] // Empty dependency array means this function is created only once
+  );
   
 
 
@@ -312,7 +333,7 @@ const Expenses = () => {
                   </div>
                 </CardHeader>
                 <CardContent 
-                  className="p-4 h-[550px] overflow-scroll"
+                  className=" p-0 pt-0 h-[550px] overflow-scroll"
                   onScroll={handleScroll}
                 >
                   <TransactionList
@@ -403,8 +424,11 @@ const Expenses = () => {
                 value={newExpense.category_data.category_id}
                 onChange={(e) => {
                   const selectedCategory = category_data?.find(
-                    (cat) => cat.category_id === e.target.value
+                      (cat) => cat.category_id == e.target.value
                   );
+
+                  console.log('category data --- ',selectedCategory)
+
                   if (selectedCategory) {
                     setNewExpense({
                       ...newExpense,

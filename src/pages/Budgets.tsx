@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ExpenseCategory, sampleBudgets } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
 import { BudgetGoal } from "@/components/BudgetGoal";
@@ -21,10 +21,11 @@ import {
 import { toast } from "sonner";
 import { capitalizeFirstLetter } from "@/helper/helper";
 import { fetch_category_data } from "@/redux/expenses/expenseThunk";
-import { set } from "date-fns";
-import { addBudgetInLocal } from "@/redux/budget/budgetSlice";
+import _ from "lodash";
+import { addBudgetInLocal, setbudgetSearch } from "@/redux/budget/budgetSlice";
 const Budgets = () => {
   const budgetData = useSelector((state: any) => state.budget.data);
+  const search = useSelector((state: any) => state.budget.search);
   const budget_list = useSelector(
     (state: any) => state.budget.budget_list
   );
@@ -46,10 +47,15 @@ const Budgets = () => {
   });
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetch_budget_data());
+
+  useEffect(() =>{
     dispatch(fetch_category_data());
-  }, [dispatch]);
+  },[])
+
+  useEffect(() => {
+    dispatch(fetch_budget_data({search:search}));
+  }, [search]);
+
   const [filterQuery, setFilterQuery] = useState("");
 
   const percentUsed = Math.round(
@@ -87,6 +93,23 @@ const Budgets = () => {
     });
     setShowAddBudgetDialog(false);
   };
+
+
+  const debouncedSearch = useCallback(
+    _.debounce((term) => {
+      // Your search logic here
+      dispatch(setbudgetSearch(term));
+      // fetchSearchResults(term) or other logic
+    }, 500),
+    [] // Empty dependency array means this function is created only once
+  );
+
+  const handlebudgetSearch = (text) =>{
+    debouncedSearch(text);
+    setFilterQuery(text);
+  }
+
+
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-gray-900 dark:text-white relative">
@@ -229,7 +252,7 @@ const Budgets = () => {
                     type="text"
                     placeholder="Search categories..."
                     value={filterQuery}
-                    onChange={(e) => setFilterQuery(e.target.value)}
+                    onChange={(e) => handlebudgetSearch(e.target.value)}
                     className="w-full shadow-sm border dark:border-slate-800 dark:bg-slate-950 focus-visible:ring-primary"
                   />
                 </div>

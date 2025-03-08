@@ -205,6 +205,7 @@ const Dashboard = () => {
               <div className="md:col-span-3 animate-fade-in-right animate-delay-[600ms]">
                 <TransactionList
                   limit={5}
+                  title = "Recent Transactions"
                   expenses={dashboardData?.recent_transactions}
                 />
               </div>

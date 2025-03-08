@@ -13,7 +13,7 @@ import NotFound from "./pages/NotFound";
 import { SplashScreen } from "./components/SplashScreen";
 import GoalsPage from "./pages/GoalsPage";
 import FutureValuePage from "./pages/FutureValuePage";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "@/providers/theme-provider";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Signup from "./pages/auth/SignUp";
 import Profile from "./pages/auth/Profile";
@@ -45,7 +45,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <ThemeProvider defaultTheme="system" storageKey="expense-tracker-theme">
         <TooltipProvider>
           <Toaster />
           <Sonner />

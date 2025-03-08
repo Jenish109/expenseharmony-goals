@@ -9,10 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Download, RefreshCw, Trash2, Save, Moon, Sun, Coins } from "lucide-react";
 import { toast } from "sonner";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/providers/theme-provider";
 
 const Settings = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [currency, setCurrency] = useState("USD");
   const [monthlyBudget, setMonthlyBudget] = useState("5000");
   
@@ -87,14 +87,19 @@ const Settings = () => {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                    {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-                    <Label htmlFor="dark-mode">Dark Mode</Label>
+                      {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                      <Label htmlFor="theme-toggle">Theme</Label>
                     </div>
-                    <Switch 
-                      id="dark-mode" 
-                      checked={theme === "dark"} 
-                      onCheckedChange={toggleTheme} 
-                    />
+                    <div className="flex items-center space-x-2">
+                      <Label htmlFor="theme-toggle" className="text-sm text-muted-foreground">
+                        {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "System"}
+                      </Label>
+                      <Switch 
+                        id="theme-toggle" 
+                        checked={theme === "dark"}
+                        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>

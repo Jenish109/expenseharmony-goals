@@ -30,7 +30,7 @@ export function TransactionList({
 
   return (
     // <Card className="border animate-fade-in">
-    <Card className="border animate-fade-in">
+    <Card className="border-0 animate-fade-in">
       <CardHeader className={title ? 'pb-2' : 'sr-only'}>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>

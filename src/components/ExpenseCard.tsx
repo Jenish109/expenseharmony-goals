@@ -15,11 +15,15 @@ export function ExpenseCard({ expense }: ExpenseCardProps) {
       <CardContent className="p-4">
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center space-x-4">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: category_data.category_color }}
+          <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mr-3"
+              style={{ backgroundColor: `${category_data.category_color}20` }}
             >
-              <DollarSign className="w-4 h-4 text-white" />
+              <DollarSign
+                size={18}
+                className="text-foreground"
+                style={{ color: category_data.category_color }}
+              />
             </div>
             <div>
               <p className="text-sm font-medium leading-none">{expense_name}</p>

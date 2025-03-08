@@ -49,6 +49,87 @@ const sampleRecurringExpenses: RecurringExpense[] = [
     frequency: "monthly",
     startDate: new Date("2023-02-10"),
     active: false
+  },
+  {
+    id: "rec1",
+    description: "Netflix Subscription",
+    amount: 15.99,
+    category: "entertainment",
+    frequency: "monthly",
+    startDate: new Date("2023-01-01"),
+    active: true
+  },
+  {
+    id: "rec2",
+    description: "Gym Membership",
+    amount: 49.99,
+    category: "health",
+    frequency: "monthly",
+    startDate: new Date("2023-01-15"),
+    active: true
+  },
+  {
+    id: "rec3",
+    description: "Adobe Creative Cloud",
+    amount: 52.99,
+    category: "other",
+    frequency: "monthly",
+    startDate: new Date("2023-02-10"),
+    active: false
+  },
+  {
+    id: "rec1",
+    description: "Netflix Subscription",
+    amount: 15.99,
+    category: "entertainment",
+    frequency: "monthly",
+    startDate: new Date("2023-01-01"),
+    active: true
+  },
+  {
+    id: "rec2",
+    description: "Gym Membership",
+    amount: 49.99,
+    category: "health",
+    frequency: "monthly",
+    startDate: new Date("2023-01-15"),
+    active: true
+  },
+  {
+    id: "rec3",
+    description: "Adobe Creative Cloud",
+    amount: 52.99,
+    category: "other",
+    frequency: "monthly",
+    startDate: new Date("2023-02-10"),
+    active: false
+  },
+  {
+    id: "rec1",
+    description: "Netflix Subscription",
+    amount: 15.99,
+    category: "entertainment",
+    frequency: "monthly",
+    startDate: new Date("2023-01-01"),
+    active: true
+  },
+  {
+    id: "rec2",
+    description: "Gym Membership",
+    amount: 49.99,
+    category: "health",
+    frequency: "monthly",
+    startDate: new Date("2023-01-15"),
+    active: true
+  },
+  {
+    id: "rec3",
+    description: "Adobe Creative Cloud",
+    amount: 52.99,
+    category: "other",
+    frequency: "monthly",
+    startDate: new Date("2023-02-10"),
+    active: false
   }
 ];
 
@@ -129,7 +210,7 @@ const RecurringExpenses = () => {
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6">
+        <main className="ml-3 md:ml-6 flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-scroll">
           <div className="max-w-4xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <div className="flex justify-between items-center">

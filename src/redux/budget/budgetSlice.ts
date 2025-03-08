@@ -3,6 +3,7 @@ import { error } from "console";
 import { create } from "domain";
 import { createSlice } from "@reduxjs/toolkit";
 import { fetch_budget_data } from "./budgetThunk";
+import { stat } from "fs";
 // import { fetch_expense_data,fetch_category_data } from "./expenseThunk";
 // import { fetch_dashboard_data } from "./dashboardThunk";
 
@@ -16,10 +17,9 @@ const getBudgetData = async (builder) => {
         })
         .addCase(fetch_budget_data.fulfilled, (state, action) => {
 
-
             state.loading = false;
             state.data = action.payload.data;
-            state.budget_list = action.payload.data.budget_list;
+            state.budget_list = action.payload.budget_list;
         })
         .addCase(fetch_budget_data.rejected, (state, action) => {
             state.loading = false;
@@ -31,6 +31,7 @@ const budgetSlice = createSlice({
     name: "expenses",
     initialState: {
         data: [],
+        search : '' ,
         budget_list: [],
         catagory_list: [],
         loading: false,
@@ -47,7 +48,11 @@ const budgetSlice = createSlice({
         resetBudget: (state) => {
             state.data = [];
             state.loading = false;
+            state.search = '';
             state.error = null;
+        },
+        setbudgetSearch : (state ,action) =>{
+            state.search = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -55,5 +60,5 @@ const budgetSlice = createSlice({
     },
 })
 
-export const { setBudget, resetBudget, addBudgetInLocal } = budgetSlice.actions;
+export const { setBudget, resetBudget,setbudgetSearch, addBudgetInLocal } = budgetSlice.actions;
 export default budgetSlice.reducer;

@@ -57,6 +57,7 @@ const expenseSlice = createSlice({
     search: "",
     filter: "",
     data: [],
+    expense_list_fetched: false,
     catagory_list: [],
     total_pages: null,
     limit: 10,
@@ -86,10 +87,14 @@ const expenseSlice = createSlice({
     setFilterCatagoryId: (state, action) => {
       state.filter = action.payload;
       state.page = 1; // Reset page when filter changes
+      state.expense_list_fetched = false;
+
     },
     increasePage: (state) => {
       if (state.page < state.total_pages) {
         state.page += 1;
+      } else {
+        state.expense_list_fetched = true;
       }
     },
   },
@@ -106,6 +111,6 @@ export const {
   resetExpenses,
   setSearchQuery,
   setFilterCatagoryId,
-  increasePage
+  increasePage,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

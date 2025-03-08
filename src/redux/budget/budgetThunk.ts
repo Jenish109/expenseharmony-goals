@@ -9,18 +9,20 @@ const fetch_budget_data:any = createAsyncThunk<any, any>(
         console.log("fetch_budget_data called with tempData:", tempData);
 
         const { rejectWithValue } = thunkAPI;
+        const {search  =  ''} = tempData ;
 
         try {
             const response = await helper.commonApiCall({
                 apiUri: API.GET_BUDGET_DATA,
-                method: "GET",
+                method: "POST",
+                body : {search : search},
                 isAuthenticatedCall: true,
             });
 
             if (!response || response.error) {
                 throw new Error(response?.error || "Failed to fetch expenses data");
             }
-
+            console.log('response ---- ' , response)
             const { status, data, message } = response;
 
             if (status) {

@@ -101,6 +101,20 @@
     height: 8px;
   }
 
+  .dark ::-webkit-scrollbar-track {
+    @apply bg-[var(--sidebar-background)];
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-muted rounded-full;
+    margin-top: -1px; 
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+  .dark ::-webkit-scrollbar-corner {
+    @apply bg-[var(--sidebar-background)]; 
+  }
+  
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
