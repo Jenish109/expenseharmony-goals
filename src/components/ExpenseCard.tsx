@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { DollarSign } from "lucide-react";
 import { Expense } from "@/lib/data";
@@ -11,12 +12,12 @@ export function ExpenseCard({ expense }: ExpenseCardProps) {
   const formattedAmount = amount;
 
   return (
-    <Card>
+    <Card className="hover:shadow-md transition-all duration-200 border-l-4" style={{ borderLeftColor: category_data.category_color }}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center space-x-4">
-          <div
-              className="h-10 w-10 rounded-full flex items-center justify-center mr-3"
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mr-3 shadow-sm"
               style={{ backgroundColor: `${category_data.category_color}20` }}
             >
               <DollarSign

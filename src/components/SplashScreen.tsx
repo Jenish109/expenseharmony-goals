@@ -1,8 +1,14 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Rocket, ChartBar, Coins } from 'lucide-react';
+import { ArrowRight, Rocket, ChartBar, Coins, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useDispatch } from 'react-redux';
+import { add_Monthly_Earning_Budget } from '@/redux/dashboard/dashboardThunk';
+import { LocalKeys } from '@/lib/constants';
+import { toast } from 'sonner';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -11,6 +17,11 @@ interface SplashScreenProps {
 export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
+  const [monthlyData, setMonthlydata] = useState({
+    monthly_budget: "",
+    monthly_income: "",
+  });
+  const dispatch = useDispatch();
   
   const slides = [
     {
@@ -27,21 +38,48 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
       icon: <Coins className="h-16 w-16 text-primary" />,
       title: "Set Budget Goals",
       description: "Create custom budget goals and track your progress to achieve financial freedom."
+    },
+    {
+      icon: <DollarSign className="h-16 w-16 text-primary" />,
+      title: "Let's Set Up Your Finances",
+      description: "To get started, let us know your monthly income and budget target.",
+      form: true
     }
   ];
 
   useEffect(() => {
     if (isSkipped) {
-      onComplete();
+      handleComplete();
     }
-  }, [isSkipped, onComplete]);
+  }, [isSkipped]);
 
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      onComplete();
+      handleComplete();
     }
+  };
+
+  const handleComplete = () => {
+    // Only save monthly data if we're on the last slide and values are provided
+    if (currentSlide === slides.length - 1 && 
+        monthlyData.monthly_budget && 
+        monthlyData.monthly_income) {
+      saveMonthlyData();
+    }
+    onComplete();
+  };
+
+  const saveMonthlyData = () => {
+    localStorage.setItem(LocalKeys.MONTHLY_DATA_SET, "true");
+    dispatch(add_Monthly_Earning_Budget(monthlyData));
+    toast.success("Financial setup complete!");
+  };
+
+  const isLastSlideValid = () => {
+    if (currentSlide !== slides.length - 1) return true;
+    return Boolean(monthlyData.monthly_budget && monthlyData.monthly_income);
   };
 
   return (
@@ -49,7 +87,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md px-6 py-12 rounded-2xl bg-white shadow-2xl"
+        className="w-full max-w-md px-6 py-12 rounded-2xl bg-card shadow-2xl border border-border"
       >
         <div className="relative h-[450px]">
           {slides.map((slide, index) => (
@@ -70,6 +108,50 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
               </div>
               <h2 className="text-2xl font-bold mb-4">{slide.title}</h2>
               <p className="text-muted-foreground mb-8">{slide.description}</p>
+              
+              {slide.form && (
+                <div className="w-full space-y-4 mb-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="monthly_income">Monthly Income</Label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-muted-foreground">$</span>
+                      <Input
+                        id="monthly_income"
+                        placeholder="0.00"
+                        value={monthlyData.monthly_income}
+                        onChange={(e) => setMonthlydata({
+                          ...monthlyData,
+                          monthly_income: e.target.value,
+                        })}
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        className="pl-8"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="monthly_budget">Monthly Budget Target</Label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-muted-foreground">$</span>
+                      <Input
+                        id="monthly_budget"
+                        placeholder="0.00"
+                        value={monthlyData.monthly_budget}
+                        onChange={(e) => setMonthlydata({
+                          ...monthlyData,
+                          monthly_budget: e.target.value,
+                        })}
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        className="pl-8"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           ))}
 
@@ -96,7 +178,11 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
             >
               Skip
             </Button>
-            <Button onClick={handleNext} className="gap-2">
+            <Button 
+              onClick={handleNext} 
+              className="gap-2"
+              disabled={!isLastSlideValid()}
+            >
               {currentSlide < slides.length - 1 ? "Next" : "Get Started"}
               <ArrowRight className="h-4 w-4" />
             </Button>
