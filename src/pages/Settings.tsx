@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,7 +71,7 @@ const Settings = () => {
       <div className="flex flex-col md:flex-row">
         <Navbar />
         
-        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6">
+        <main className="flex-1 px-4 pt-6 pb-24 md:pb-6 md:pl-0 md:pr-6 h-screen overflow-auto">
           <div className="max-w-3xl mx-auto">
             <header className="mb-8 animate-fade-in">
               <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
@@ -79,35 +80,42 @@ const Settings = () => {
             
             <div className="space-y-6">
               {/* Appearance Settings */}
-              <Card className="border animate-fade-in">
+              <Card className="gradient-card animate-fade-in">
                 <CardHeader>
-                  <CardTitle>Appearance</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    {theme === "dark" ? 
+                      <Moon className="h-5 w-5 text-indigo-400" /> : 
+                      <Sun className="h-5 w-5 text-amber-500" />
+                    }
+                    Appearance
+                  </CardTitle>
                   <CardDescription>Customize how the app looks</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-                      <Label htmlFor="theme-toggle">Theme</Label>
+                      <Label htmlFor="theme-toggle">Theme Mode</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Label htmlFor="theme-toggle" className="text-sm text-muted-foreground">
-                        {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "System"}
-                      </Label>
+                    <div className="flex items-center space-x-3">
+                      <Sun className="h-5 w-5 text-amber-500" />
                       <Switch 
                         id="theme-toggle" 
                         checked={theme === "dark"}
                         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
                       />
+                      <Moon className="h-5 w-5 text-indigo-400" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
               
               {/* Currency & Budget Settings */}
-              <Card className="border animate-fade-in animate-delay-[100ms]">
+              <Card className="gradient-card animate-fade-in animate-delay-[100ms]">
                 <CardHeader>
-                  <CardTitle>Currency & Budget</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <Coins className="h-5 w-5 text-emerald-500" />
+                    Currency & Budget
+                  </CardTitle>
                   <CardDescription>Set your preferred currency and monthly budget</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -146,9 +154,12 @@ const Settings = () => {
               </Card>
               
               {/* Data Management */}
-              <Card className="border animate-fade-in animate-delay-[200ms]">
+              <Card className="gradient-card animate-fade-in animate-delay-[200ms]">
                 <CardHeader>
-                  <CardTitle>Data Management</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <Download className="h-5 w-5 text-blue-500" />
+                    Data Management
+                  </CardTitle>
                   <CardDescription>Export, import, or clear your data</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
