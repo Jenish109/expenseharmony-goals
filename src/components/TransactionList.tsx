@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExpenseCard } from "@/components/ExpenseCard";
 import { Expense } from "@/lib/data";
@@ -23,15 +22,15 @@ export function TransactionList({
 
   if (!displayExpenses.length) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p className="text-lg font-medium">No expenses found</p>
-        <p className="text-sm mt-1">Add some expenses to see them here</p>
+      <div className="text-center py-8 text-muted-foreground">
+        No expenses found
       </div>
     );
   }
 
   return (
-    <Card className="border-0 animate-fade-in gradient-card">
+    // <Card className="border animate-fade-in">
+    <Card className="border-0 animate-fade-in">
       <CardHeader className={title ? 'pb-2' : 'sr-only'}>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
@@ -46,18 +45,18 @@ export function TransactionList({
         </div>
       </CardHeader>
       <CardContent className={title ? 'pt-0' : 'pt-4'}>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {displayExpenses.map((expense) => (
             <div
               key={expense.expense_id}
-              className="mb-4 cursor-pointer transition-transform hover:scale-[1.01]"
+              className="mb-4 cursor-pointer"
               onClick={() => onExpenseClick?.(expense.expense_id)}
             >
               <ExpenseCard expense={expense} />
             </div>
           ))}
           {limit && expenses.length > limit && (
-            <button className="w-full text-center py-2 text-sm text-primary hover:text-primary/80 dark:text-primary dark:hover:text-primary/80 transition-colors">
+            <button className="w-full text-center text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">
               View all expenses
             </button>
           )}
